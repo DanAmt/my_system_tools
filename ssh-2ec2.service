@@ -1,0 +1,23 @@
+# Poor mans VPN tunnel. 
+# Example for Amazon, works with any other jumphost too
+# the nice part is , the tunnel keeps coming up again.
+# Connect with ssh -p 5555 localhost
+
+[Unit]
+Description=EC2-Tunnel
+
+[Service]
+#Type=simple
+#EnvironmentFile=-/etc/sysconfig/rsyslog
+ExecStart=/usr/bin/ssh -NT -R 5555:*:22 -i {{ KEYFILE }} ec2-user@{{NODE}}.{{REGION}}.compute.amazonaws.com 
+TimeoutStartSec=60
+#RemainAfterExit=true
+#UMask=0066
+#StandardOutput=null
+RestartSec=5
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+;Alias=syslog.service
+
